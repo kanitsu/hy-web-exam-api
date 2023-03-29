@@ -1,0 +1,19 @@
+{
+  "items": [
+    {
+      "title": "Rolls_Royce_Ghost",
+      "cover": "http://localhost:3000/images/Rolls_Royce_Ghost.png",
+      "play_url": "http://localhost:3000/media/Rolls_Royce_Ghost.m3u8"
+    },
+    {
+      "title": "Toyota_Camry_XV70",
+      "cover": "http://localhost:3000/images/Toyota_Camry_XV70.png",
+      "play_url": "http://localhost:3000/media/Toyota_Camry_XV70.m3u8"
+    },
+    {
+      "title": "Volkswagen_Golf_7",
+      "cover": "http://localhost:3000/images/Volkswagen_Golf_7.png",
+      "play_url": "http://localhost:3000/media/Volkswagen_Golf_7.m3u8"
+    }
+  ]
+}
