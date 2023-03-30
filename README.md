@@ -7,3 +7,9 @@
 ```javascript=
 npm i && npm run start
 ```
+
+### Swagger 網址 
+http://localhost:3000/docs
+
+### 前端網址 
+http://localhost:5000
