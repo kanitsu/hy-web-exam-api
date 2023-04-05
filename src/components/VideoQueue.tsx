@@ -3,6 +3,19 @@ import { motion } from 'framer-motion';
 import { useSwipeable } from 'react-swipeable';
 import ReactPlayer from 'react-player';
 
+const styles = {
+    column: {
+        position: 'relative' as 'relative',
+    },
+    container: {
+        position: 'absolute' as 'absolute',
+        width: 414,
+        height: 896,
+        left: -207,
+        overflow: 'hidden'
+    },
+};
+
 interface VideoInfo {
     "cover": string;
     "play_url": string;
@@ -44,9 +57,10 @@ export function VideoQueue({ videoInfos }: Props): JSX.Element {
 
     return (
         <>
-        <div {...handlers}>
+        <div {...handlers} style={styles.column}>
             {videoInfos.map((video, index) => (
                 <motion.div
+                    style={styles.container}
                     key={index}
                     animate={{
                         top: `${(index - position) * 896 - (downward ? 496 : 400)}px`,

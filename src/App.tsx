@@ -19,8 +19,8 @@ function App() {
   const [active, setActive] = useState('Home');
   return (
     <div style={styles.container}>
-      {/* <Home /> */}
-      <Discover />
+    {active == 'Discover' && <Discover />}
+    {active == 'Home' && <Home />}
       <TabBar labels={['Home', 'Discover']} onChange={setActive} />
     </div>
   );
