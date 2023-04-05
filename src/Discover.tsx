@@ -1,6 +1,7 @@
 const styles = {
     image: {
         width: '100%',
+        flexGrow: 1,
     },
 };
 

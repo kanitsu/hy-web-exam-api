@@ -9,8 +9,9 @@ const styles = {
   tabBar: {
     position: 'absolute' as 'absolute',
     bottom: 0,
-    paddingBottom: 20,
+    //paddingBottom: 20,
     width: '100%',
+    height: 30,
     backgroundColor: '#000',
     display: 'flex',
     flexDirection: 'row' as 'row',
@@ -22,7 +23,8 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center',
     cursor: 'pointer',
-    fontWeight: '400'
+    fontWeight: '400',
+    overflow: 'hidden'
   },
   tabButtonText: {
     color: '#fff',
