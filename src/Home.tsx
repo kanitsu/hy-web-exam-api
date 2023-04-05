@@ -87,9 +87,9 @@ export function Home({ videos, position, downward, needTap, onFirstTap, onChange
     const [active, setActive] = useState(0);
     const [status, setStatus] = useState<VideoState[]>([]);
     const [durations, setDurations] = useState<number[]>([]);
+    const [players, setPlayers] = useState<ReactPlayer[]>([]);
 
     const handlePlaybackStatusUpdate = (index: number) => (state: any) => {
-        console.log(durations)
         const newStatus = [...status];
         newStatus[index] = { progress: state.played * 100.0, isBuffering: state.isBuffering };
         setStatus(newStatus);
@@ -99,6 +99,17 @@ export function Home({ videos, position, downward, needTap, onFirstTap, onChange
         const newDurations = [...durations];
         newDurations[index] = duration
         setDurations(newDurations);
+    }
+
+    const playerRefs = [
+        (player: ReactPlayer) => players[0] = player,
+        (player: ReactPlayer) => players[1] = player,
+        (player: ReactPlayer) => players[2] = player,
+    ];
+
+    const handleProgressBarUpdate = (value: number) => {
+        console.log(value, durations[position])
+        players[position].seekTo(value, 'fraction');
     }
 
     return (
@@ -117,6 +128,7 @@ export function Home({ videos, position, downward, needTap, onFirstTap, onChange
                             damping: 20,
                         }}>
                         <ReactPlayer
+                            ref={playerRefs[index]}
                             playing={index === position && playing}
                             loop={true}
                             controls={false}
@@ -145,7 +157,7 @@ export function Home({ videos, position, downward, needTap, onFirstTap, onChange
                     }}>For You</span>
                 </div>
             </div>
-            <ProgressBar progress={status[position] ? status[position].progress : 0} />
+            <ProgressBar progress={status[position] ? status[position].progress : 0} onDragEnd={handleProgressBarUpdate} />
             <Marquee
                 style={style.marquee} 
                 gradient={false}
