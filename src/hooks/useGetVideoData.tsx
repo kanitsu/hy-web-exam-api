@@ -3,7 +3,7 @@ import { useState } from "react";
 export function useGetVideoData() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<Error>();
-    const [data, setData] = useState<{items:{}}>();
+    const [data, setData] = useState<{items:[]}>();
 
     const loadInfo = (url: string) => {
         setLoading(true);
