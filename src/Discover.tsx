@@ -11,11 +11,3 @@ export function Discover(): JSX.Element {
         <img src='/explore.jpg' style={styles.image} />
     );
 }
-
-export function Discover(): JSX.Element {
-    return (
-        <>
-            <img src='/explore.jpg' style={styles.image} />
-        </>
-    );
-}
