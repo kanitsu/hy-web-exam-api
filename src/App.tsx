@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSwipeable } from 'react-swipeable';
 import { TabBar } from './components/TabBar';
 import { Discover } from './Discover';
 import { Home } from './Home';
+import { useGetVideoData } from './hooks/useGetVideoData';
 
 const style = {
   app: {
@@ -26,19 +27,20 @@ function App() {
   const labels = ['Home', 'Discover'];
   const [active, setActive] = useState(0);
 
-  const urls = [
-    'http://localhost:3000/media/Volkswagen_Golf_7.m3u8',
-    'http://localhost:3000/media/Toyota_Camry_XV70.m3u8',
-    'http://localhost:3000/media/Rolls_Royce_Ghost.m3u8',
-  ];
+  const { loadInfo, data, loading, error } = useGetVideoData();
+  useEffect(() => loadInfo('http://localhost:3000/following_list'), []);
 
   const onChangeSource = (id: number) => {
-
+    if (id === 0) {
+      loadInfo('http://localhost:3000/following_list');
+    } else {
+      loadInfo('http://localhost:3000/for_you_list');
+    }
   }
 
   const handlers = useSwipeable({
     onSwipedUp: (eventData) => {
-      if (position < urls.length - 1) {
+      if (data && position < data.items.length - 1) {
         setPosition(position + 1);
         setDownward(false);
       }
@@ -53,7 +55,7 @@ function App() {
 
   return (
     <div {...handlers} style={style.app}>
-      {active === 0 && <Home position={position} downward={downward} needTap={needClick} onFirstTap={() => setNeedClick(false)} onChangeSource={onChangeSource}/>}
+      {active === 0 && <Home videos={data?.items} position={position} downward={downward} needTap={needClick} onFirstTap={() => setNeedClick(false)} onChangeSource={onChangeSource}/>}
       {active === 1 && <Discover />}
       <TabBar labels={labels} active={active} onChange={setActive} downward={downward} />
     </div>

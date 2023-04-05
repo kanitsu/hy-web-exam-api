@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import ReactPlayer from 'react-player';
 import { motion } from 'framer-motion';
+import { video_item } from './hooks/useGetVideoData';
+import { ProgressBar } from './components/ProgressBar';
 
 const style = {
     column: {
@@ -59,27 +61,41 @@ const style = {
     }
 };
 
+interface VideoState {
+    progress: number;
+    isBuffering: boolean;
+};
 interface Props {
+    videos?: video_item[];
     position: number;
     downward: boolean;
     needTap: boolean;
     onFirstTap: () => void;
     onChangeSource: (id: number) => void;
 }
-export function Home({ position, downward, needTap, onFirstTap, onChangeSource }: Props): JSX.Element {
+export function Home({ videos, position, downward, needTap, onFirstTap, onChangeSource }: Props): JSX.Element {
     const [playing, setPlaying] = useState(!needTap);
     const [active, setActive] = useState(0);
+    const [status, setStatus] = useState<VideoState[]>([]);
+    const [durations, setDurations] = useState<number[]>([]);
 
-    const urls = [
-        'http://localhost:3000/media/Volkswagen_Golf_7.m3u8',
-        'http://localhost:3000/media/Toyota_Camry_XV70.m3u8',
-        'http://localhost:3000/media/Rolls_Royce_Ghost.m3u8',
-    ];
+    const handlePlaybackStatusUpdate = (index: number) => (state: any) => {
+        console.log(durations)
+        const newStatus = [...status];
+        newStatus[index] = { progress: state.played * 100.0, isBuffering: state.isBuffering };
+        setStatus(newStatus);
+    }
+
+    const handleVideoDuration = (index: number) => (duration: any) => {
+        const newDurations = [...durations];
+        newDurations[index] = duration
+        setDurations(newDurations);
+    }
 
     return (
         <>
             <div style={style.column}>
-                {urls.map((url, index) => (
+                {videos?.map((video, index) => (
                     <motion.div
                         style={style.container}
                         key={index}
@@ -96,10 +112,12 @@ export function Home({ position, downward, needTap, onFirstTap, onChangeSource }
                             loop={true}
                             controls={false}
                             playsinline={true}
-                            url={url}
+                            url={video.play_url}
                             width='100%'
                             height='100%'
                             onError={e => { setPlaying(false); console.log('onError', e) }}
+                            onProgress={handlePlaybackStatusUpdate(index)}
+                            onDuration={handleVideoDuration(index)}
                         />
                     </motion.div>
                 ))}
@@ -118,6 +136,7 @@ export function Home({ position, downward, needTap, onFirstTap, onChangeSource }
                     }}>For You</span>
                 </div>
             </div>
+            <ProgressBar progress={status[position] ? status[position].progress : 0} />
             {needTap && <div style={style.popup} onClick={() => { onFirstTap(); setPlaying(true); console.log('play!') }}>
                 <div style={style.popupContent}>
                     <h1 style={{ textAlign: 'center' }}>Tap to Play</h1>

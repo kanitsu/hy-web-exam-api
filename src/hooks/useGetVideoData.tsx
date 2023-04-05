@@ -1,9 +1,15 @@
 import { useState } from "react";
 
+export interface video_item {
+    title: string;
+    cover: string;
+    play_url: string;
+}
+
 export function useGetVideoData() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<Error>();
-    const [data, setData] = useState<{items:[]}>();
+    const [data, setData] = useState<{items:[video_item]}>();
 
     const loadInfo = (url: string) => {
         setLoading(true);
