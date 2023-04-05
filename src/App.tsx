@@ -32,6 +32,10 @@ function App() {
     'http://localhost:3000/media/Rolls_Royce_Ghost.m3u8',
   ];
 
+  const onChangeSource = (id: number) => {
+
+  }
+
   const handlers = useSwipeable({
     onSwipedUp: (eventData) => {
       if (position < urls.length - 1) {
@@ -49,8 +53,8 @@ function App() {
 
   return (
     <div {...handlers} style={style.app}>
-      {active == 0 && <Home position={position} downward={downward} needTap={needClick} onFirstTap={() => setNeedClick(false)} />}
-      {active == 1 && <Discover />}
+      {active === 0 && <Home position={position} downward={downward} needTap={needClick} onFirstTap={() => setNeedClick(false)} onChangeSource={onChangeSource}/>}
+      {active === 1 && <Discover />}
       <TabBar labels={labels} active={active} onChange={setActive} downward={downward} />
     </div>
   );

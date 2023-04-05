@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 const styles = {
     tabBar: {
-        position: 'absolute' as 'absolute',
+        position: 'fixed' as 'fixed',
         bottom: 0,
         width: '100%',
         height: 30,
@@ -45,7 +45,7 @@ export function TabBar({ labels, active, downward, onChange }: Props): JSX.Eleme
     };
 
     return (
-        <div style={{ ...styles.tabBar, ...(!downward && { bottom: -113 }), }}>
+        <div style={styles.tabBar}>
             {labels.map((label, index) => (
                 <div
                     key={index}
