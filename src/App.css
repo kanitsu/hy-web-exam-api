@@ -1,26 +1,4 @@
-.App {
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-  padding: 0px;
-  margin: 0px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: linear-gradient(180deg, rgb(255, 94, 0), rgb(143, 133, 49));
-}
 
-.column {
-  position: relative;
-}
-
-.container {
-  position: absolute;
-  width: 414px;
-  height: 896px;
-  left: -207px;
-  overflow: hidden;
-}
 
 .player-wrapper {
   position: relative;

@@ -1,12 +1,22 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { useState } from 'react';
 import { useSwipeable } from 'react-swipeable';
-import ReactPlayer from 'react-player';
-import './App.css';
+import { Home } from './Home';
+
+const style = {
+  app: {
+    width: '100vw',
+    height: '100vh',
+    overflow: 'hidden',
+    padding: 0,
+    margin: 0,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    background: 700
+  }
+};
 
 function App() {
-  const [playing, setPlaying] = useState(false);
-  const [needClick, setNeedClick] = useState(true);
   const [position, setPosition] = useState(0);
   const [downward, setDownward] = useState(true);
 
@@ -32,35 +42,8 @@ function App() {
   });
 
   return (
-    <div {...handlers} className='App'>
-      <div className="column">
-        {urls.map((url, index) => (
-          <motion.div
-            className="container"
-            key={index}
-            animate={{
-              top: `${(index - position) * 896 - (downward ? 496 : 400) }px`,
-            }}
-            transition={{
-              type: "spring",
-              stiffness: 260,
-              damping: 20,
-            }}>
-            <ReactPlayer
-              playing={playing}
-              loop={true}
-              controls={false}
-              playsinline={true}
-              // className='react-player'
-              url={url}
-              width='100%'
-              height='100%'
-              onError={e => { setPlaying(false); console.log('onError', e) }}
-            />
-          </motion.div>
-        ))}
-      </div>
-      {needClick && <img className='explore-page' onClick={() => { setNeedClick(false); setPlaying(true); console.log('play!') }} src='/explore.jpg' alt='explore page' />}
+    <div {...handlers} style={style.app}>
+      <Home position={position} downward={downward} />
     </div>
   );
 }
