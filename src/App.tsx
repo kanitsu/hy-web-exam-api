@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { useSwipeable } from 'react-swipeable';
+import { TabBar } from './components/TabBar';
+import { Discover } from './Discover';
 import { Home } from './Home';
 
 const style = {
@@ -19,6 +21,10 @@ const style = {
 function App() {
   const [position, setPosition] = useState(0);
   const [downward, setDownward] = useState(true);
+  const [needClick, setNeedClick] = useState(true);
+
+  const labels = ['Home', 'Discover'];
+  const [active, setActive] = useState(0);
 
   const urls = [
     'http://localhost:3000/media/Volkswagen_Golf_7.m3u8',
@@ -43,7 +49,9 @@ function App() {
 
   return (
     <div {...handlers} style={style.app}>
-      <Home position={position} downward={downward} />
+      {active == 0 && <Home position={position} downward={downward} needTap={needClick} onFirstTap={() => setNeedClick(false)} />}
+      {active == 1 && <Discover />}
+      <TabBar labels={labels} active={active} onChange={setActive} downward={downward} />
     </div>
   );
 }
