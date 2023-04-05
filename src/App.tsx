@@ -55,7 +55,7 @@ function App() {
 
   return (
     <div {...handlers} style={style.app}>
-      {active === 0 && <Home videos={data?.items} position={position} downward={downward} needTap={needClick} onFirstTap={() => setNeedClick(false)} onChangeSource={onChangeSource}/>}
+      {active === 0 && <Home videos={data ? data.items : []} position={position} downward={downward} needTap={needClick} onFirstTap={() => setNeedClick(false)} onChangeSource={onChangeSource}/>}
       {active === 1 && <Discover />}
       <TabBar labels={labels} active={active} onChange={setActive} downward={downward} />
     </div>

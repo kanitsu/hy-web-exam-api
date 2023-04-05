@@ -3,6 +3,7 @@ import ReactPlayer from 'react-player';
 import { motion } from 'framer-motion';
 import { video_item } from './hooks/useGetVideoData';
 import { ProgressBar } from './components/ProgressBar';
+import Marquee from "react-fast-marquee";
 
 const style = {
     column: {
@@ -54,6 +55,14 @@ const style = {
         fontWeight: '900',
         color: '#fff'
     },
+    marquee: {
+        position: 'absolute' as 'absolute',
+        bottom: 75,
+        left: 10,
+        justifyContent: 'center',
+        width: '60%',
+        color: '#fff'
+    },
     coverBottom: {
         position: 'absolute' as 'absolute',
         width: '100%',
@@ -66,7 +75,7 @@ interface VideoState {
     isBuffering: boolean;
 };
 interface Props {
-    videos?: video_item[];
+    videos: video_item[];
     position: number;
     downward: boolean;
     needTap: boolean;
@@ -137,6 +146,12 @@ export function Home({ videos, position, downward, needTap, onFirstTap, onChange
                 </div>
             </div>
             <ProgressBar progress={status[position] ? status[position].progress : 0} />
+            <Marquee
+                style={style.marquee} 
+                gradient={false}
+            >
+                <span style={{fontSize: 15}}>{`${videos[position]?.title}`}</span>
+            </Marquee>
             {needTap && <div style={style.popup} onClick={() => { onFirstTap(); setPlaying(true); console.log('play!') }}>
                 <div style={style.popupContent}>
                     <h1 style={{ textAlign: 'center' }}>Tap to Play</h1>
