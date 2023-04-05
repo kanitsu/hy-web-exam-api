@@ -1,66 +1,24 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { useSwipeable } from 'react-swipeable';
-import ReactPlayer from 'react-player';
-import './App.css';
+import { useState } from 'react';
+import { Home } from './Home';
+import { TabBar } from './components/TabBar';
+
+const styles = {
+  container: {
+    display: 'flex',
+    flex: 1,
+    flexDirection: 'column' as 'column',
+    backgroundColor: '#777',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+};
 
 function App() {
-  const [playing, setPlaying] = useState(false);
-  const [needClick, setNeedClick] = useState(true);
-  const [position, setPosition] = useState(0);
-  const [downward, setDownward] = useState(true);
-
-  const urls = [
-    'http://localhost:3000/media/Volkswagen_Golf_7.m3u8',
-    'http://localhost:3000/media/Toyota_Camry_XV70.m3u8',
-    'http://localhost:3000/media/Rolls_Royce_Ghost.m3u8',
-  ];
-
-  const handlers = useSwipeable({
-    onSwipedUp: (eventData) => {
-      if (position < urls.length - 1) {
-        setPosition(position + 1);
-        setDownward(false);
-      }
-    },
-    onSwipedDown: (eventData) => {
-      if (position > 0) {
-        setPosition(position - 1);
-        setDownward(true);
-      }
-    },
-  });
-
+  const [active, setActive] = useState('Home');
   return (
-    <div {...handlers} className='App'>
-      <div className="column">
-        {urls.map((url, index) => (
-          <motion.div
-            className="container"
-            key={index}
-            animate={{
-              top: `${(index - position) * 896 - (downward ? 496 : 400) }px`,
-            }}
-            transition={{
-              type: "spring",
-              stiffness: 260,
-              damping: 20,
-            }}>
-            <ReactPlayer
-              playing={playing}
-              loop={true}
-              controls={false}
-              playsinline={true}
-              // className='react-player'
-              url={url}
-              width='100%'
-              height='100%'
-              onError={e => { setPlaying(false); console.log('onError', e) }}
-            />
-          </motion.div>
-        ))}
-      </div>
-      {needClick && <img className='explore-page' onClick={() => { setNeedClick(false); setPlaying(true); console.log('play!') }} src='/explore.jpg' alt='explore page' />}
+    <div style={styles.container}>
+      <Home />
+      <TabBar labels={['Home', 'Discover']} onChange={setActive} />
     </div>
   );
 }
