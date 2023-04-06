@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import ReactPlayer from 'react-player';
 import { motion } from 'framer-motion';
 import { video_item } from './hooks/useGetVideoData';
@@ -149,7 +149,7 @@ export function Home({ videos, position, downward, needTap, intial, onFirstTap, 
                             onError={e => console.error(index, e) }
                             onProgress={handlePlaybackStatusUpdate(index)}
                             onDuration={handleVideoDuration(index)}
-                            onReady={handleReady(index)}
+                            // onReady={handleReady(index)}
                         />
                     </motion.div>
                 ))}
