@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import ReactPlayer from 'react-player';
 import { motion } from 'framer-motion';
 import { video_item } from './hooks/useGetVideoData';
@@ -79,15 +79,19 @@ interface Props {
     position: number;
     downward: boolean;
     needTap: boolean;
+    intial: boolean;
     onFirstTap: () => void;
     onChangeSource: (id: number) => void;
 }
-export function Home({ videos, position, downward, needTap, onFirstTap, onChangeSource }: Props): JSX.Element {
+export function Home({ videos, position, downward, needTap, intial, onFirstTap, onChangeSource }: Props): JSX.Element {
     const [playing, setPlaying] = useState(!needTap);
     const [active, setActive] = useState(0);
     const [status, setStatus] = useState<VideoState[]>([]);
     const [durations, setDurations] = useState<number[]>([]);
     const [players, setPlayers] = useState<ReactPlayer[]>([]);
+
+    const [progress0, setProgress0] = useState(0);
+    const [progress1, setProgress1] = useState(0);
 
     const handlePlaybackStatusUpdate = (index: number) => (state: any) => {
         const newStatus = [...status];
@@ -108,8 +112,14 @@ export function Home({ videos, position, downward, needTap, onFirstTap, onChange
     ];
 
     const handleProgressBarUpdate = (value: number) => {
-        console.log(value, durations[position])
         players[position].seekTo(value, 'fraction');
+    }
+
+    const handleReady = (index: number) => () => {
+        if(index === position) {
+            console.log(active, progress0, progress1)
+            players[position].seekTo(active === 0 ? progress0 : progress1, 'fraction')
+        }
     }
 
     return (
@@ -136,21 +146,22 @@ export function Home({ videos, position, downward, needTap, onFirstTap, onChange
                             url={video.play_url}
                             width='100%'
                             height='100%'
-                            onError={e => { setPlaying(false); console.log('onError', e) }}
+                            onError={e => console.error(index, e) }
                             onProgress={handlePlaybackStatusUpdate(index)}
                             onDuration={handleVideoDuration(index)}
+                            onReady={handleReady(index)}
                         />
                     </motion.div>
                 ))}
             </div>
             <div style={style.overlay}>
-                <div style={style.tabButton} onClick={() => { setActive(0); onChangeSource(0); }}>
+                <div style={style.tabButton} onClick={() => { if(active === 1) {setActive(0); onChangeSource(0);} setProgress1(status[position] ? status[position].progress : 0)}}>
                     <span style={{
                         ...style.tabButtonText,
                         ...(active === 1 && { color: 'rgba(255, 255, 255, 0.6)' }),
                     }}>Following</span>
                 </div>
-                <div style={style.tabButton} onClick={() => { setActive(1); onChangeSource(1); }}>
+                <div style={style.tabButton} onClick={() => { if(active === 0) {setActive(1); onChangeSource(1);} setProgress0(status[position] ? status[position].progress : 0)}}>
                     <span style={{
                         ...style.tabButtonText,
                         ...(active === 0 && { color: 'rgba(255, 255, 255, 0.6)' }),
@@ -164,7 +175,7 @@ export function Home({ videos, position, downward, needTap, onFirstTap, onChange
             >
                 <span style={{fontSize: 15}}>{`${videos[position]?.title}`}</span>
             </Marquee>
-            {needTap && <div style={style.popup} onClick={() => { onFirstTap(); setPlaying(true); console.log('play!') }}>
+            {needTap && <div style={style.popup} onClick={() => { onFirstTap(); setPlaying(true); }}>
                 <div style={style.popupContent}>
                     <h1 style={{ textAlign: 'center' }}>Tap to Play</h1>
                     Modern browsers have implemented policies that prevent videos from auto-playing unless they are muted. As a result, users are required to interact with the page before the video can be played normally. Hence, this popup is required.

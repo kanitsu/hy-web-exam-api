@@ -23,17 +23,28 @@ function App() {
   const [position, setPosition] = useState(0);
   const [downward, setDownward] = useState(true);
   const [needClick, setNeedClick] = useState(true);
+  const [intial, setInitial] = useState(true);
 
   const labels = ['Home', 'Discover'];
   const [active, setActive] = useState(0);
+
+
+  const [position0, setPosition0] = useState(0);
+  const [position1, setPosition1] = useState(0);
 
   const { loadInfo, data, loading, error } = useGetVideoData();
   useEffect(() => loadInfo('http://localhost:3000/following_list'), []);
 
   const onChangeSource = (id: number) => {
     if (id === 0) {
+      setInitial(false);
+      setPosition1(position);
+      setPosition(position0);
       loadInfo('http://localhost:3000/following_list');
     } else {
+      setInitial(false);
+      setPosition0(position);
+      setPosition(position1);
       loadInfo('http://localhost:3000/for_you_list');
     }
   }
@@ -55,7 +66,7 @@ function App() {
 
   return (
     <div {...handlers} style={style.app}>
-      {active === 0 && <Home videos={data ? data.items : []} position={position} downward={downward} needTap={needClick} onFirstTap={() => setNeedClick(false)} onChangeSource={onChangeSource}/>}
+      {active === 0 && <Home videos={data ? data.items : []} intial={intial} position={position} downward={downward} needTap={needClick} onFirstTap={() => setNeedClick(false)} onChangeSource={onChangeSource}/>}
       {active === 1 && <Discover />}
       <TabBar labels={labels} active={active} onChange={setActive} downward={downward} />
     </div>
